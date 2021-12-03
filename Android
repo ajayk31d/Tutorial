@@ -27,6 +27,27 @@ approach is to use the setTag() method for any instantiated view in the instanti
 
 
 -------------------------Hey--------------------------------
+Executor
+OEM
+What is the use of cryptoobjects
+Jetpack, Jetpack Datastore
+Blocking queue and dequeue
+Lazy and eager
+ViewModel and AndroidViewModel
+Thread
+Application COntext and context
+Lifecycle and LifecycleOwner, LifecycleObeservers
+
+LiveData, MutableLiveData and MediatorLiveData
+Loaders and Room
+HIDL and HAL
+HashMap and ConcurrentHashMap
+ImmutableClass
+Decor View
+Type safety in data
+Legacy Libraries
+What is refrential integrity
+sendBroadcast and sendOrderedBroadcast
 
 
 
