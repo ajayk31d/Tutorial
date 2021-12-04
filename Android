@@ -1,3 +1,46 @@
+
+------------------------------------------------------
+
+The difference between Handler and Thread: Imagine you have a Runnable r = new Runnable{...}
+When you use new Thread(r).start(), you actually created a new thread and run task asynchronously.
+When you use new Handler().post(r) (or Message), you added the Runnable object to Looper and execute the code later in the same thread.
+A Thread, generally MainThread or UIThread contains a Looper. When MainThread runs, it will loop the Looper and execute Runnable one by one.
+
+Thread actually creates new thread - part of job running in background relatively to current thread.
+
+Handler itself doesn't provide any mechanisms for background job - it is just a tool to access message queue (Looper) associated with some thread. UI thread have Looper attached by default
+------------------------------------------------------
+Looper(final), MessageQueue ->
+class LooperThread extends Thread {//A thread with a looper and handler
+  *      public Handler mHandler;
+  *
+  *      public void run() {
+  *          Looper.prepare();
+  *
+  *          mHandler = new Handler(Looper.myLooper()) {
+  *              public void handleMessage(Message msg) {
+  *                  // process incoming messages here
+  *              }
+  *          };
+  *
+  *          Looper.loop();
+  *      }
+  *  }
+
+
+-----------
+ThreadLocal
+
+------------------------------------------------------
+Context (abstract):- There are two types of context one is Activity context and second is Application context
+
+Application context is associated with application so will be same throughout the life of application. So for Toast you can also use application context because toast can be displayed from anywhere within your application and is not attached to specific window.
+Activity Context is associated with activity and can be destroyed if activity destroyed. You should launch new activity with acitivty context. You may use application context to launch an activtty but then  you need to set flag Intent.FLAG_ACTIVITY_NEW_TASK in intent to trat it as a new task. This generally should only be used if you need a Context whose lifecycle is separate from the current context, that is tied to the lifetime of the process rather than the current component
+
+Application class never has any UI associations and such has no window token. So for UI items that need context use the Activity which already extends Context.
+
+Difference between MainActivity.this and this :- If we want to use activity context in Inner class of MainActivity then we use MainActivity.this or if we use in MainActivity itself then use this simply. and if we are in another class then we simply pass it an intance.
+
 -----------------------------------------------------
 SparseArray<E>, SparseBooleanArray, SparseIntArray - Maps integers to Objects, avoid the creation of Integer objects as in Map<Integer, String>. These are efficient memory structures than HashMap. Ex-
 
