@@ -26,10 +26,21 @@ class LooperThread extends Thread {//A thread with a looper and handler
   *          Looper.loop();
   *      }
   *  }
+  
+  Looper transforms a normal thread, which terminates when its run() method return, into something run continuously until Android app is running,
+  Looper provides a queue where jobs to be done are enqueued
+  https://stackoverflow.com/questions/7597742/what-is-the-purpose-of-looper-and-how-to-use-it#:~:text=What%20is%20Looper%3F,run%20another%20Message(Runnable)
+
+Does one process has multiple looper?
+
+HandlerThread is just a thread which has event loop. That means that if you need Thread with Looper you don’t need to create it by yourself, you just can take HandlerThread
 
 
 -----------
-ThreadLocal
+ThreadLocal- A generic type class. This class provides thread-local variables. the class below generates unique identifiers local to each thread.
+A thread's id is assigned the first time it invokes {@code ThreadId.get()} and remains unchanged on subsequent calls. Java ThreadLocal class enables 
+you to create variables that can only be read and written by the same thread. Thus, even if two threads are executing the same code, and the code 
+has a reference to the same ThreadLocal variable, the two threads cannot see each other's ThreadLocal variables.
 
 ------------------------------------------------------
 Context (abstract):- There are two types of context one is Activity context and second is Application context
