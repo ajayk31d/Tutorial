@@ -1,5 +1,6 @@
 
 ------------------------------------------------------
+Handlers are synchronous by default
 
 The difference between Handler and Thread: Imagine you have a Runnable r = new Runnable{...}
 When you use new Thread(r).start(), you actually created a new thread and run task asynchronously.
@@ -8,7 +9,8 @@ A Thread, generally MainThread or UIThread contains a Looper. When MainThread ru
 
 Thread actually creates new thread - part of job running in background relatively to current thread.
 
-Handler itself doesn't provide any mechanisms for background job - it is just a tool to access message queue (Looper) associated with some thread. UI thread have Looper attached by default
+Handler itself doesn't provide any mechanisms for background job - it is just a tool to access message queue (Looper) associated with some thread. 
+UI thread have Looper attached by default
 ------------------------------------------------------
 Looper(final), MessageQueue ->
 class LooperThread extends Thread {//A thread with a looper and handler
@@ -33,7 +35,8 @@ class LooperThread extends Thread {//A thread with a looper and handler
 
 Does one process has multiple looper?
 
-HandlerThread is just a thread which has event loop. That means that if you need Thread with Looper you don’t need to create it by yourself, you just can take HandlerThread
+HandlerThread is just a thread which has event loop. That means that if you need Thread with Looper you don’t need to create it by yourself, 
+you just can take HandlerThread
 
 
 -----------
@@ -45,25 +48,33 @@ has a reference to the same ThreadLocal variable, the two threads cannot see eac
 ------------------------------------------------------
 Context (abstract):- There are two types of context one is Activity context and second is Application context
 
-Application context is associated with application so will be same throughout the life of application. So for Toast you can also use application context because toast can be displayed from anywhere within your application and is not attached to specific window.
-Activity Context is associated with activity and can be destroyed if activity destroyed. You should launch new activity with acitivty context. You may use application context to launch an activtty but then  you need to set flag Intent.FLAG_ACTIVITY_NEW_TASK in intent to trat it as a new task. This generally should only be used if you need a Context whose lifecycle is separate from the current context, that is tied to the lifetime of the process rather than the current component
+Application context is associated with application so will be same throughout the life of application. So for Toast you can also use application context 
+because toast can be displayed from anywhere within your application and is not attached to specific window.
+Activity Context is associated with activity and can be destroyed if activity destroyed. You should launch new activity with acitivty context. 
+You may use application context to launch an activtty but then  you need to set flag Intent.FLAG_ACTIVITY_NEW_TASK in intent to trat it as a new task. 
+This generally should only be used if you need a Context whose lifecycle is separate from the current context, that is tied to the lifetime of the process 
+rather than the current component
 
 Application class never has any UI associations and such has no window token. So for UI items that need context use the Activity which already extends Context.
 
-Difference between MainActivity.this and this :- If we want to use activity context in Inner class of MainActivity then we use MainActivity.this or if we use in MainActivity itself then use this simply. and if we are in another class then we simply pass it an intance.
+Difference between MainActivity.this and this :- If we want to use activity context in Inner class of MainActivity then we use MainActivity.this or 
+if we use in MainActivity itself then use this simply. and if we are in another class then we simply pass it an intance.
 
 -----------------------------------------------------
-SparseArray<E>, SparseBooleanArray, SparseIntArray - Maps integers to Objects, avoid the creation of Integer objects as in Map<Integer, String>. These are efficient memory structures than HashMap. Ex-
+SparseArray<E>, SparseBooleanArray, SparseIntArray - Maps integers to Objects, avoid the creation of Integer objects as in Map<Integer, String>. 
+These are efficient memory structures than HashMap. Ex-
 
 SparseArray<String> map = new SparseArray<String>();
 map.put(1, "Hello");
 
 -----------------------------------------------------
-least recently used cache _ (LRU cache) - A LRU cache keeps track of the usage of its members. It has a given size and if this size is exceeded, it removes the items which have not be accessed the longest.
+least recently used cache _ (LRU cache) - A LRU cache keeps track of the usage of its members. It has a given size and if this size is exceeded, 
+it removes the items which have not be accessed the longest.
 
 onTrimMemory()- This method is called by the Android system asking you to cleanup your memory in case the Android system requires resources for foreground processes.
 
-By default, the cache size is measured in the number of entries. Override sizeOf(K, V) to size the cache in different units. For example, this cache is limited to 4MiB of bitmaps
+By default, the cache size is measured in the number of entries. Override sizeOf(K, V) to size the cache in different units. For example, 
+this cache is limited to 4MiB of bitmaps
 
 Cache - 1 Memorycache (LruCache) -  while in the background it might be killed
 	2 DiskCache (DiskLruCache) -  fetching images from disk is slower than loading from memory and should be done in a background thread, as disk read times can be unpredictable
@@ -72,10 +83,12 @@ Note: A ContentProvider might be a more appropriate place to store cached images
 
 -----------------------------------------------------
 
-ViewPager- getItemPosition(). If for a child view this method returns POSITION_NONE, the ViewPager understands that the view has been deleted, calling the destroyItem(), and removing this view
-So this approach is wrong if items count is too high.
+ViewPager- getItemPosition(). If for a child view this method returns POSITION_NONE, the ViewPager understands that the view has been deleted, calling the destroyItem(), 
+and removing this view So this approach is wrong if items count is too high.
 
-approach is to use the setTag() method for any instantiated view in the instantiateItem() method. So when you want to change the data or invalidate the view that you need, you can call the findViewWithTag() method on the ViewPager to retrieve the previously instantiated view and modify/use it as you want without having to delete/create a new view each time you want to update some value.
+approach is to use the setTag() method for any instantiated view in the instantiateItem() method. So when you want to change the data or invalidate the view that you need, 
+you can call the findViewWithTag() method on the ViewPager to retrieve the previously instantiated view and modify/use it as you want without having to delete/create a new view each time 
+you want to update some value.
 
 ----------------------------------------------------------
 
