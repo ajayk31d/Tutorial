@@ -1,4 +1,22 @@
 
+
+------------------------------------------------------
+LiveData:-
+------------------------------------------------------
+MVVM and MVP comparison
+------------------------------------------------------
+Dex file generation amd multi dexing:-
+------------------------------------------------------
+Use of AIDL:-
+------------------------------------------------------
+ViewModel working:-
+------------------------------------------------------
+Immutable class demo
+------------------------------------------------------
+ClassLoader:-
+------------------------------------------------------
+DecorView:-
+
 ------------------------------------------------------
 Handlers are synchronous by default
 
@@ -33,7 +51,7 @@ class LooperThread extends Thread {//A thread with a looper and handler
   Looper provides a queue where jobs to be done are enqueued
   https://stackoverflow.com/questions/7597742/what-is-the-purpose-of-looper-and-how-to-use-it#:~:text=What%20is%20Looper%3F,run%20another%20Message(Runnable)
 
-Does one process has multiple looper?
+Does one thread has multiple looper? - No
 
 HandlerThread is just a thread which has event loop. That means that if you need Thread with Looper you don’t need to create it by yourself, 
 you just can take HandlerThread
