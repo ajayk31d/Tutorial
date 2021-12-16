@@ -1,6 +1,26 @@
 
 
 ------------------------------------------------------
+
+
+------------------------------------------------------
+R8:- Google released R8 as a replacement of Proguard to help developers shrink the code with the better-generated output (APK). 
+R8 is a tool that converts our java byte code into an optimized dex code.it optimizes like removing unused classes, methods, etc. 
+It runs on the compile time. R8 uses Proguard rules to modify its default behavior.
+
+It uses three techniques to reduce size - Shrinking or Tree Shaking, Optimization, Identifier Renaming
+R8 is present by default in our application but to enable R8 shrinking in our application, set the minifyEnabled to true.
+
+Android app using Gradle plugin above 3.4.0 or more the project uses R8 by default and no longer uses the Proguard to perform optimizations. 
+But, it uses Proguard rules only.
+Proguard reduces the app size by 8.5% and compared to R8 which reduces the code by 10%.
+
+While using Proguard, the Applications code is converted to Java bytecode by the Java compiler. After the conversion, it is then optimized by 
+Proguard using the rules which we have written. Then dex converts it to optimized Dalvik byte code.
+While using R8, first the app's code is converted to Java bytecode by the java compiler and then using R8 directly, 
+it converts the java byte code in Dalvik bytecode. R8 coming as a default compile-time optimizer.
+
+------------------------------------------------------
 LiveData:-
 ------------------------------------------------------
 MVVM and MVP comparison
