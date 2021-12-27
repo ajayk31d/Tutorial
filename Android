@@ -1,6 +1,7 @@
 
 
 ------------------------------------------------------
+JVM Architecture:- JVM itself knows nothing about the Java programming language. Instead, it knows how to execute its own instruction set, called Java bytecode.
 
 
 ------------------------------------------------------
@@ -29,7 +30,74 @@ Dex file generation amd multi dexing:-
 ------------------------------------------------------
 Use of AIDL:-
 ------------------------------------------------------
-ViewModel working:-
+Configuration changes and memory leaks because UI components trying to manage asynchronous calls
+ViewModel working:- ViewModel objects are also lifecycle-aware. They are automatically cleared when the Lifecycle they are observing gets permanently destroyed.
+		ViewModel includes support for Kotlin-Coroutines. So, they can be easily integrated for any asynchronous processing.
+viewmodels are stored inside the activity (or FragmentManager in case of fragments)
+viewModel = ViewModelProvider(this, ViewModelFactory()).get(CounterViewModel::class.java) //this=ViewModelStoreOwner
+Creation of ViewModelProvider - public ViewModelProvider(@NonNull ViewModelStoreOwner owner, @NonNull Factory factory) {
+				    this(owner.getViewModelStore(), factory);
+				}
+public interface ViewModelStoreOwner {
+    @NonNull
+    ViewModelStore getViewModelStore();
+}
+So now we know that our activity is the ViewModelStoreOwner and its the responsibility of our activity to provide the ViewModelStore. 
+Is Activty implementing ViewModelStoreOwner interface? - Yes, AppCompatActivity In androidx package
+
+Getting ViewModel from ViewModelProvider- 	public <T extends ViewModel> T get(@NonNull Class<T> modelClass) {
+						    String canonicalName = modelClass.getCanonicalName();
+						    if (canonicalName == null) {
+							throw new IllegalArgumentException("Local and anonymous classes can not be ViewModels");
+						    }
+						    return get(DEFAULT_KEY + ":" + canonicalName, modelClass);
+						}
+
+public <T extends ViewModel> T get(@NonNull String key, @NonNull Class<T> modelClass) {
+    ViewModel viewModel = mViewModelStore.get(key);
+
+    if (modelClass.isInstance(viewModel)) {
+        if (mFactory instanceof OnRequeryFactory) {
+            ((OnRequeryFactory) mFactory).onRequery(viewModel);
+        }
+        return (T) viewModel;
+    } else {
+        //noinspection StatementWithEmptyBody
+        if (viewModel != null) {
+            // TODO: log a warning.
+        }
+    }
+    if (mFactory instanceof KeyedFactory) {
+        viewModel = ((KeyedFactory) (mFactory)).create(key, modelClass);
+    } else {
+        viewModel = (mFactory).create(modelClass);
+    }
+    mViewModelStore.put(key, viewModel);
+    return (T) viewModel;
+}
+
+A ViewModelStore can be considered as a container that stores the ViewModels in a HashMap. Fragment (from androidx.fragment.app) & ComponentActivity 
+(from androidx.activity) implements ViewModelStoreOwner. These classes maintains a viewModelStore and value is restored appropriately
+
+Our AppCompatActivity extends FragmentAcrivity extends ComponentActivity implements ViewModelStoreOwner
+When the owner activity is finished, the framework calls the ViewModel objects's onCleared() method so that it can clean up resources
+
+ViewModel doesn't know about view and Lifecycle objects. ViewModel objects can contain LifecycleObservers, such as LiveData objects. 
+However ViewModel objects must never observe changes to lifecycle-aware observables, such as LiveData objects. If the ViewModel needs the Application context, 
+for example to find a system service, it can extend the AndroidViewModel class and have a constructor that receives the Application in the constructor, 
+since Application class extends Context
+
+When our activity is recreated due to any configuration change, nc(NonConfigurationInstances) contains the previous instance of ViewModelStore. 
+nc(NonConfigurationInstances) is null when our activity is created for the first time.
+NonConfigurationInstances(Activity.java) is the object which is retained by the Android system even when the activity gets recreated.
+
+Whenever our activity is getting recreated due to any configuration change, onRetainNonConfigurationInstance() gets invoked which returns the 
+NonConfigurationInstances(ComponentActivity.java) instance. This object is retained by the Android system so that it can be delivered to the next activity instance on recreation.
+
+Similarly, we can also retain our own custom objects by implementing the onRetainCustomNonConfigurationInstance().
+
+After the recreation of our activity, NonConfigurationInstances(Activity.java) is received in the attach() method of the Activity class.
+
 ------------------------------------------------------
 Immutable class demo
 ------------------------------------------------------
