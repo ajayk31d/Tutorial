@@ -99,7 +99,17 @@ Similarly, we can also retain our own custom objects by implementing the onRetai
 After the recreation of our activity, NonConfigurationInstances(Activity.java) is received in the attach() method of the Activity class.
 
 ------------------------------------------------------
-Immutable class demo
+Immutable class demo - Immutable class in java means that once an object is created, we cannot change its content. In Java, all the wrapper classes 
+(like Integer, Boolean, Byte, Short) and String class is immutable.
+-The class must be declared as final so that child classes can’t be created.
+-Data members in the class must be declared private so that direct access is not allowed.
+-Data members in the class must be declared as final so that we can’t change the value of it after object creation.
+-There should be no setters or in simpler terms, there should be no option to change the value of the instance variable.
+-A parameterized constructor should initialize all the fields performing a deep copy so that data members can’t be modified with an object reference.
+-Deep Copy of objects should be performed in the getter methods to return a copy rather than returning the actual object reference)
+
+https://www.geeksforgeeks.org/create-immutable-class-java/
+we don’t need to perform deep copy or cloning of data members of wrapper types as they are already immutable.
 ------------------------------------------------------
 ClassLoader:-
 ------------------------------------------------------
@@ -155,13 +165,14 @@ has a reference to the same ThreadLocal variable, the two threads cannot see eac
 Context (abstract):- There are two types of context one is Activity context and second is Application context
 
 Application context is associated with application so will be same throughout the life of application. So for Toast you can also use application context 
-because toast can be displayed from anywhere within your application and is not attached to specific window.
-Activity Context is associated with activity and can be destroyed if activity destroyed. You should launch new activity with acitivty context. 
-You may use application context to launch an activtty but then  you need to set flag Intent.FLAG_ACTIVITY_NEW_TASK in intent to trat it as a new task. 
-This generally should only be used if you need a Context whose lifecycle is separate from the current context, that is tied to the lifetime of the process 
-rather than the current component
+because toast can be displayed from anywhere within your application and is not attached to specific window. 
+Activity Context is associated with activity and can be destroyed if activity destroyed. You should launch new activity with acitivty context to maintain non-standard 
+back stack behaviors in your application. You may use application context to launch an activtty but then  you need to set flag Intent.FLAG_ACTIVITY_NEW_TASK in intent 
+to treat it as a new task. This generally should only be used if you need a Context whose lifecycle is separate from the current context, that is tied to the lifetime 
+of the process rather than the current component
 
 Application class never has any UI associations and such has no window token. So for UI items that need context use the Activity which already extends Context.
+getApplicationContext() offers application context and getBaseContext() offers activity context.
 
 Difference between MainActivity.this and this :- If we want to use activity context in Inner class of MainActivity then we use MainActivity.this or 
 if we use in MainActivity itself then use this simply. and if we are in another class then we simply pass it an intance.
