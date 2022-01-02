@@ -22,7 +22,28 @@ While using R8, first the app's code is converted to Java bytecode by the java c
 it converts the java byte code in Dalvik bytecode. R8 coming as a default compile-time optimizer.
 
 ------------------------------------------------------
-LiveData:-
+LiveData:- LiveData is an observable data holder class. LiveData is lifecycle-aware means it only updates app component observers that are in an active lifecycle state.
+active state if its lifecycle is in the STARTED or RESUMED state.LiveData only notifies active observers about updates. Inactive observers registered to watch 
+LiveData objects aren't notified about changes. You can register an observer paired with an object that implements the LifecycleOwner interface.
+advantages of using LiveData
+You can extend a LiveData object using the singleton pattern to wrap system services so that they can be shared in your app. The LiveData object connects to the system 
+service once, and then any observer that needs the resource can just watch the LiveData object.
+When you update the value stored in the LiveData object, it triggers all registered observers as long as the attached LifecycleOwner is in the active state.
+LiveData is a wrapper that can be used with any data. A LiveData object is usually stored within a ViewModel object
+
+LiveData has no publicly available methods to update the stored data. The MutableLiveData class exposes the setValue(T) and postValue(T) methods publicly and you must use 
+these if you need to edit the value stored in a LiveData object. Usually MutableLiveData is used in the ViewModel and then the ViewModel only exposes immutable LiveData 
+objects to the observers.
+LiveDatais not designed to handle asynchronous streams of data. Even though you can use LiveData transformations and MediatorLiveData to achieve this
+
+You can register an observer without an associated LifecycleOwner object using the observeForever(Observer) method. In this case, the observer is considered to be always 
+active and is therefore always notified about modifications. You can remove these observers calling the removeObserver(Observer) method.
+
+Note: Make sure to store LiveData objects that update the UI in ViewModel objects, as opposed to an activity or fragment. To decouple LiveData instances from specific 
+activity or fragment instances and allow LiveData objects to survive configuration changes.
+
+Note: You must call the setValue(T) method to update the LiveData object from the main thread. If the code is executed in a worker thread, you can use the postValue(T) method 
+instead to update the LiveData object.
 ------------------------------------------------------
 MVVM and MVP comparison
 ------------------------------------------------------
