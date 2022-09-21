@@ -1,0 +1,2 @@
+When I was trying to build project with a module and opencv. Then was getting 2 native .so libs found like 'lib/armeabi-v8a/libopencv_java4.so' then we have to add packagingOptions in top app level gradle file
+with pickFirst '/lib/armeabi-v7a/libopencv_java4.so'.
